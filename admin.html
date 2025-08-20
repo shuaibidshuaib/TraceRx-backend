@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>TraceRx Admin Upload</title>
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f9;
+  color: #333;
+  margin: 0;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+h2 {
+  color: #2e8b57;
+  margin-bottom: 20px;
+}
+
+form {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+input[type="text"],
+input[type="date"] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+button {
+  background-color: #2e8b57;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #246a44;
+}
+
+#result {
+  margin-top: 20px;
+  padding: 20px;
+  background: #e9e9f1;
+  border-radius: 8px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+  font-family: 'Courier New', Courier, monospace;
+}
+</style>
+</head>
+<body>
+
+<h2>Upload Drug Batch</h2>
+
+<form id="uploadForm">
+<input type="text" placeholder="Drug Name" name="drugName" required><br>
+<input type="text" placeholder="Batch ID" name="batchId" required><br>
+<input type="text" placeholder="Manufacturer" name="manufacturer" required><br>
+<input type="date" placeholder="Expiry Date" name="expiry" required><br>
+<button type="submit">Upload</button>
+</form>
+
+<div id="result"></div>
+
+<script>
+document.getElementById("uploadForm").addEventListener("submit", async function (e) {
+  e.preventDefault();
+
+  const form = e.target;
+  const data = {
+    drugName: form.drugName.value,
+    batchId: form.batchId.value,
+    manufacturer: form.manufacturer.value,
+    expiry: form.expiry.value,
+  };
+
+  try {
+    const response = await fetch("http://localhost:5000/api/drugs/upload", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
+    }
+
+    const result = await response.json();
+    document.getElementById("result").innerText = JSON.stringify(result, null, 2);
+  } catch (error) {
+    console.error('Error during upload:', error);
+    document.getElementById("result").innerText = `Error: ${error.message}`;
+  }
+});
+</script>
+
+</body>
+</html>
