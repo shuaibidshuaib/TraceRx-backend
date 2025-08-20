@@ -1,9 +1,28 @@
 {
   "name": "tracerx-backend",
   "version": "1.0.0",
+  "description": "TraceRx backend API for drug tracking, verification, and blockchain integration",
   "main": "app.js",
   "scripts": {
     "start": "node app.js"
+  },
+  "author": "Shuaibu",
+  "license": "MIT",
+  "engines": {
+    "node": ">=20.19.4"
+  },
+  "keywords": [
+    "express",
+    "firebase",
+    "hedera",
+    "drug-tracking",
+    "traceRx",
+    "backend",
+    "api"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/shuaibu-dev/tracerx-backend"
   },
   "dependencies": {
     "@hashgraph/sdk": "^2.70.0",
